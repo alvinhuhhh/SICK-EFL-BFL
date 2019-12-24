@@ -1,7 +1,7 @@
 # what-up
-Repo for SICK Pte Ltd EFL/BFL system. Image-processing, motor control and serial communication.
+Repo for SICK Pte Ltd EFL/BFL system on Raspberry Pi 3. Image-processing, motor control and serial communication.
 
-#Guide for installation OpenCV:
+#Guide for OpenCV installation:
 #https://qengineering.eu/install-opencv-4.1-on-raspberry-pi-4.html
 
 #OpenCV tutorials:
