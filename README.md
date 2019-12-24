@@ -1,4 +1,4 @@
-# what-up
+# SICK EFL/BFL System
 Repo for SICK Pte Ltd EFL/BFL system on Raspberry Pi 3. Image processing, motor control and RS485 serial communication.
 
 #Guide for OpenCV installation:
