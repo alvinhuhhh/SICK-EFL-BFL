@@ -1,5 +1,5 @@
 # SICK EFL/BFL System
-Repo for SICK Pte Ltd EFL/BFL system on Raspberry Pi 3. Image processing, motor control and RS485 serial communication.
+Repo for SICK Pte Ltd EFL/BFL system on Raspberry Pi 3B+. Image processing, motor control and RS485 serial communication.
 
 #PySerial 3.4 Documentation
 #https://pyserial.readthedocs.io/en/latest/pyserial.html
