@@ -12,3 +12,10 @@ Repo for SICK Pte Ltd EFL/BFL system on Raspberry Pi 3B+. Image processing, moto
 
 #NumPy reference
 #https://docs.scipy.org/doc/numpy/reference/
+
+Required dependencies:
+ -PySerial
+ -OpenCV
+ -NumPy
+ -Matplotlib
+ -Tkinter
