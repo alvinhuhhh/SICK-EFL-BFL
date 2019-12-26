@@ -59,8 +59,10 @@ ser = serial.Serial(
 #####################
 #Machine Calibration#
 #####################
-##1 mm = 175 steps
-##0.1 mm = 17.5 steps
+##1 mm = 100 steps
+##0.1 mm = 10 steps
+def ConvertSteps(mm):
+    return int(mm*100)
 
 #################
 #Motor commands#
@@ -126,7 +128,7 @@ def GoHome():
 
 def Move(pos):
     print("Moving to:", pos)
-    position = (int(pos).to_bytes(4, 'big', signed=True))
+    position = (ConvertSteps(float(pos)).to_bytes(4, 'big', signed=True))
     ser.write((b'\x01\x10\x18\x00\x00\x04\x08\x00\x00\x00\x01'+position)
               + crc16.crc16((b'\x01\x10\x18\x00\x00\x04\x08\x00\x00\x00\x01'+position))['lower']
               + crc16.crc16((b'\x01\x10\x18\x00\x00\x04\x08\x00\x00\x00\x01'+position))['upper'])
@@ -149,9 +151,10 @@ def CheckReady():
               + crc16.crc16(b'\x01\x03\x00\x7F\x00\x01')['lower']
               + crc16.crc16(b'\x01\x03\x00\x7F\x00\x01')['upper'])
     if int.from_bytes(ser.read(200)[3:5], 'big') & 0b100000 == 0b100000:
-        print("Not Ready!")
+        print("Ready!")
         return 1
     else:
+        print("Not Ready!")
         return 0
 
 def CheckMove():
@@ -178,4 +181,4 @@ def CheckPosition():
     ser.write(b'\x01\x03\x00\xCC\x00\x02'
               + crc16.crc16(b'\x01\x03\x00\xCC\x00\x02')['lower']
               + crc16.crc16(b'\x01\x03\x00\xCC\x00\x02')['upper'])
-    print("Current position:", int.from_bytes(ser.read(200)[4:7], 'big'))
+    print("Current position:", int.from_bytes(ser.read(200)[4:7], 'big')/100, "mm")

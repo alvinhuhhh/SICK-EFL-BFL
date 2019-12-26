@@ -24,7 +24,7 @@ camera.resolution = (1024, 768)
 ##################
 #Motor Parameters#
 ##################
-max_range = 58500
+max_range = 350
 default_speed = 500
 
 ########
@@ -75,13 +75,13 @@ def dummyFunction():
 ########
 #Script#
 ########
+result = {}
 def RunScript(init, steps, inc, filename):
     #Initial typing
-    init = int(init)
+    init = float(init)
     steps = int(steps)
-    inc = int(inc)
+    inc = float(inc)
     filename = str(filename)
-    result = {}
     
     #Set motor speed
     motor.SetSpeed(default_speed)
@@ -105,7 +105,7 @@ def RunScript(init, steps, inc, filename):
             print("Captured!")
             
             #Image processing
-            result[inc*i] = imgprocess.CalcAvgDiameter(savename, lower, upper)
+            result[init+(inc*i)] = imgprocess.CalcAvgDiameter(savename, lower, upper)
             print(result)
             break
         
@@ -117,7 +117,7 @@ def RunScript(init, steps, inc, filename):
         print("Captured!")
         
         #Image processing
-        result[inc*i] = imgprocess.CalcAvgDiameter(savename, lower, upper)
+        result[init+(inc*i)] = imgprocess.CalcAvgDiameter(savename, lower, upper)
         print(result)
 
     #End
@@ -127,7 +127,17 @@ def RunScript(init, steps, inc, filename):
     fPos = min(result.keys(), key=(lambda k: result[k]))
     fDiam = result[fPos]
     fPos = init + fPos
-    print("Min diameter: ", fDiam, " at ", fPos)
+    print("Min diameter: ", fDiam, " pixels at ", fPos)
+
+###################
+#Result Processing#
+###################
+def PlotGraph():
+    result_sorted = sorted(result.items())
+    x,y = zip(*result_sorted)
+    plt.plot(x, y)
+    plt.show()
+    return
 
 #####
 #GUI#
@@ -146,6 +156,8 @@ class App:
         self.quit.grid(row=2, column=5)
         self.run_script = Button(master, text="Run Script", command=ScriptSettings)
         self.run_script.grid(row=3, column=3)
+        self.plot_result = Button(master, text="Plot Results", command=PlotGraph)
+        self.plot_result.grid(row=3, column=4)
         
         label2 = Label(master, text="Manual Input")
         label2.grid(row=4, column=3)
@@ -162,14 +174,14 @@ class App:
         label3.grid(row=7, column=3)
         self.show_histogram = Button(master, text="Show Histogram", command=ShowHistogram)
         self.show_histogram.grid(row=8, column=2)
+        self.show_processed = Button(master, text="Show Processed", command=ShowProcessed)
+        self.show_processed.grid(row=9, column=2)
         self.start_preview = Button(master, text="Start Preview", command=StartPreview)
         self.start_preview.grid(row=8, column=3)
         self.stop_preview = Button(master, text="Stop Preview", command=StopPreview)
         self.stop_preview.grid(row=9, column=3)
         self.camera_capture = Button(master, text="Camera Capture", command=CameraCapture)
         self.camera_capture.grid(row=8, column=4)
-        self.show_processed = Button(master, text="Show Processed", command=ShowProcessed)
-        self.show_processed.grid(row=9, column=4)
         
         motor.CheckReady()
         motor.CheckMove()
